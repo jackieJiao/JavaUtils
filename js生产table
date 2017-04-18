@@ -1,0 +1,67 @@
+<script>
+		$(document).ready(function(){ 
+			getData1(0);
+			
+			}); 
+
+		var nowPage=0;
+		function nextpage(){
+			
+			nowPage=nowPage+1;
+			getData1(nowPage);
+		}
+		function getData1(num){
+			debugger;
+			
+			
+			var pageNum=num;
+			$.post('/tyc/getOnePageHistory',{pageNum:pageNum}, function(result) {
+				console.info(result);
+				var doc = document;
+				var obj = result;
+				var databody = doc.getElementById('queryResultTable1');
+				//删除现有行
+				while (databody.rows.length > 0) {
+					databody.deleteRow(0);
+				}
+				var rows = obj.data;
+				var dataObj;
+				for (var i = 0; i < rows.length; i++) {
+					dataObj = rows[i];
+					tr = doc.createElement("tr");
+					
+					td = doc.createElement("td");
+					td.innerHTML = dataObj.instiName;
+					tr.appendChild(td);
+					
+					td = doc.createElement("td");
+					td.innerHTML = dataObj.optName;
+					tr.appendChild(td);
+					
+					td = doc.createElement("td");
+					td.innerHTML = dataObj.searchNumber;
+					tr.appendChild(td);
+					
+					td = doc.createElement("td");
+					td.innerHTML = dataObj.resultNum;
+					tr.appendChild(td);
+					
+					td = doc.createElement("td");
+					td.innerHTML = dataObj.sinotime;
+					tr.appendChild(td);
+		
+
+					databody.appendChild(tr);
+				}
+				//设置页码等标记
+				//$('#count').val(obj.pageinfo.totalCount);
+				//$('#pages').val(obj.pageinfo.totalPageCount);
+				$('#pageinfo').html(
+						'<a href="#" style="text-decoration:none;color:#797979">总数'
+								+ obj.totalCount);
+
+			});
+		}
+			
+		</script>
+		
